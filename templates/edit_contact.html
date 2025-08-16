@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Edit Contact{% endblock %}
+{% block content %}
+<div class="form-container">
+    <h1>Edit {{ contact.name }}</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" value="{{ contact.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" value="{{ contact.title }}">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" value="{{ contact.email }}">
+        </div>
+        <button type="submit" class="btn btn-success">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

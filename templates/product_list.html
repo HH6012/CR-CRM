@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Products & Services{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>Products & Services</h1>
+    <a href="{{ url_for('add_product') }}" class="button btn-success">Add New Product</a>
+</div>
+<div class="card">
+    <table>
+        <thead><tr><th>Name</th><th>Category</th><th>Price (€)</th><th>Description</th></tr></thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.category }}</td>
+                <td>{{ "{:,.0f}".format(product.price) }}</td>
+                <td>{{ product.description | truncate(100) }}</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="4">No products or services have been added yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

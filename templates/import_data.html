@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Import Data{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Import Organizations from CSV</h1>
+    <p>Upload a CSV file with the following columns: <strong>Org, Country, Sponsorship Potential</strong>. The system will skip any organizations that already exist in your database.</p>
+    <form method="post" enctype="multipart/form-data" class="form-container" style="max-width: 500px; padding: 0; box-shadow: none;">
+        <div class="form-group">
+            <label for="file">CSV File</label>
+            <input type="file" name="file" id="file" accept=".csv" required style="padding: 1rem; border: 1px solid #ccc;">
+        </div>
+        <button type="submit" class="btn btn-success">Import Data</button>
+    </form>
+</div>
+{% endblock %}

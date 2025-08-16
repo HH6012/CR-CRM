@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}{{ event.name }}{% endblock %}
+{% block content %}
+<style>
+    .kpi-card { text-align: right; }
+    .kpi-value { font-size: 2rem; font-weight: bold; color: #0056b3; }
+    .kpi-label { font-size: 1rem; color: #6c757d; }
+    .grid-container { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start; }
+</style>
+
+<div class="page-header">
+    <h1>{{ event.name }}</h1>
+    <div class="kpi-card">
+        <div class="kpi-value">€{{ "{:,.0f}".format(total_revenue) }}</div>
+        <div class="kpi-label">Total Projected Revenue</div>
+    </div>
+</div>
+<p>{{ event.date.strftime('%d %B %Y') }} | {{ event.location }}</p>
+
+<div class="grid-container">
+    <div class="main-content">
+        <div class="card">
+            <h2>Sponsors & Delegates</h2>
+            <table>
+                <thead><tr><th>Organization</th><th>Type</th><th>Value (€)</th></tr></thead>
+                <tbody>
+                {% for attendee in event.attendees %}
+                <tr>
+                    <td><a href="{{ url_for('org_detail', org_id=attendee.organization_id) }}">{{ attendee.organization.name }}</a></td>
+                    <td>{{ attendee.registration_type }}</td>
+                    <td>€{{ "{:,.0f}".format(attendee.value) }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="3">No sponsors or delegates added yet.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="sidebar">
+        <div class="card">
+            <h2>Add Attendee</h2>
+            <form action="{{ url_for('add_attendee', event_id=event.id) }}" method="post">
+                <div class="form-group">
+                    <label for="organization_id">Organization</label>
+                    <select name="organization_id" id="organization_id" required>
+                        <option value="">-- Select --</option>
+                        {% for org in potential_attendees %}
+                        <option value="{{ org.id }}">{{ org.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="registration_type">Type</label>
+                    <select name="registration_type" id="registration_type">
+                        <option value="Sponsor">Sponsor</option>
+                        <option value="Delegate">Delegate</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="value">Value (€)</label>
+                    <input type="number" name="value" id="value" placeholder="e.g., 50000" required>
+                </div>
+                <button type="submit" class="btn btn-success">Add to Event</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

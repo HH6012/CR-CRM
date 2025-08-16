@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Edit Deal{% endblock %}
+{% block content %}
+<div class="form-container">
+    <h1>Edit Deal</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="name">Deal Name</label>
+            <input type="text" name="name" id="name" value="{{ deal.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="value">Value (€)</label>
+            <input type="number" name="value" id="value" value="{{ deal.value }}" required>
+        </div>
+        <div class="form-group">
+            <label for="stage">Stage</label>
+            <select name="stage" id="stage">
+                {% for stage in stages %}
+                <option value="{{ stage }}" {% if deal.stage == stage %}selected{% endif %}>{{ stage }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="closing_date">Expected Closing Date</label>
+            <input type="date" name="closing_date" id="closing_date" value="{{ deal.closing_date.strftime('%Y-%m-%d') }}" required>
+        </div>
+        <button type="submit" class="btn btn-success">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

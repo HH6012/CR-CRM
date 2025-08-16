@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Add Organization{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Add New Target Organization</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="name">Organization Name</label>
+            <input type="text" name="name" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input type="text" name="country" id="country">
+        </div>
+        <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" name="category" id="category" placeholder="e.g., Central Bank, FinTech">
+        </div>
+        <div class="form-group">
+            <label for="client_tier">Client Tier</label>
+            <select name="client_tier" id="client_tier">
+                <option value="Standard">Standard</option>
+                <option value="Premium">Premium</option>
+                <option value="Strategic Partner">Strategic Partner</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="interests">Interests</label>
+            <input type="text" name="interests" id="interests" placeholder="e.g., CBDC, Banknotes, AI">
+        </div>
+        <button type="submit" class="btn btn-success">Save Organization</button>
+    </form>
+</div>
+{% endblock %}

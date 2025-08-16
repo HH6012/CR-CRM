@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Compose Email{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="h3">AI Email Composer</h1>
+                <p>Generate a draft for <strong>{{ contact.name }}</strong> at {{ contact.organization.name }}.</p>
+                
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="purpose" class="form-label">Purpose of Email</label>
+                        <input type="text" name="purpose" id="purpose" class="form-control" placeholder="e.g., Follow-up on CBPC Sponsorship" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="key_points" class="form-label">Key Talking Points (one per line)</label>
+                        <textarea name="key_points" id="key_points" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Generate Draft</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h4">Generated Draft</h2>
+                {% if draft %}
+                <form action="{{ url_for('send_email', contact_id=contact.id) }}" method="post">
+                    <textarea name="email_body" class="form-control" rows="15">{{ draft }}</textarea>
+                    <button type="submit" class="btn btn-success w-100 mt-3">Send Email & Log Interaction</button>
+                </form>
+                {% else %}
+                <p class="text-muted">Your AI-generated draft will appear here.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

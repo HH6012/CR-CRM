@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Add Organization{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Add New Target Organization</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="name">Organization Name</label>
+            <input type="text" name="name" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input type="text" name="country" id="country">
+        </div>
+        <div class="form-group">
+            <label for="sponsorship_potential">Sponsorship Potential</label>
+            <select name="sponsorship_potential" id="sponsorship_potential">
+                <option value="High (Sponsor Target)">High (Sponsor Target)</option>
+                <option value="Low (Delegate Only)">Low (Delegate Only)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="strategic_notes">Strategic Notes</label>
+            <textarea name="strategic_notes" id="strategic_notes" rows="6" placeholder="Enter any high-level strategic notes..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Save Organization</button>
+        <a href="{{ url_for('organization_list') }}" class="btn btn-secondary" style="text-align: center; margin-top: 1rem;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

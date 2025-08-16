@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Add Task{% endblock %}
+{% block content %}
+<div class="form-container">
+    <h1>Add Task for {{ contact.name }}</h1>
+    <form method="post">
+        <div class="form-group mb-3">
+            <label for="title" class="form-label">Task Title</label>
+            <input type="text" name="title" id="title" class="form-control" placeholder="e.g., Follow-up call re: CBPC sponsorship" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="due_date" class="form-label">Due Date</label>
+            <input type="date" name="due_date" id="due_date" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success">Save Task</button>
+    </form>
+</div>
+{% endblock %}

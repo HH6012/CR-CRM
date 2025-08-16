@@ -1,0 +1,18 @@
+<div class="timeline-item">
+    <div class="timeline-icon">
+        {% if item.type == 'interaction' %}I{% elif item.type == 'task' %}T{% elif item.type == 'deal' %}D{% else %}F{% endif %}
+    </div>
+    <div class="timeline-content">
+        <span class="timeline-date">{{ item.date.strftime('%d %B %Y') }}</span>
+        {% if item.type == 'interaction' %}
+            <p><strong>{{ item.item.interaction_type }}</strong> with {{ item.item.contact.name }}</p>
+            <blockquote>{{ item.item.notes }}</blockquote>
+        {% elif item.type == 'task' %}
+            <p><strong>Task Created:</strong> {{ item.item.title }} (Due: {{ item.item.due_date.strftime('%d %b') }})</p>
+        {% elif item.type == 'deal' %}
+            <p><strong>Deal Created:</strong> {{ item.item.name }} for €{{ item.item.value }}</p>
+        {% elif item.type == 'file' %}
+            <p><strong>File Uploaded:</strong> {{ item.item.filename }}</p>
+        {% endif %}
+    </div>
+</div>

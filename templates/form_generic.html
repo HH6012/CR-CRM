@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>{{ title }}</h1>
+    <form method="post">
+        {% for name, label, type in fields %}
+        <div class="form-group">
+            <label for="{{ name }}">{{ label }}</label>
+            <input type="{{ type }}" name="{{ name }}" id="{{ name }}" value="{{ values[name] if values and values[name] }}" required>
+        </div>
+        {% endfor %}
+
+        {% if select_field %}
+        <div class="form-group">
+            <label for="{{ select_field[0] }}">{{ select_field[1] }}</label>
+            <select name="{{ select_field[0] }}" id="{{ select_field[0] }}">
+                <option value="">-- Select an option --</option>
+                {% for item in select_field[2] %}
+                <option value="{{ item.id }}" {% if values and values[select_field[0]] == item.id %}selected{% endif %}>{{ item.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+        
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="{{ cancel_url }}" class="btn btn-secondary" style="text-align: center; margin-top: 1rem;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

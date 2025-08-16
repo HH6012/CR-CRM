@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>Customize Pipeline Stages</h2>
+    <p>Add, remove, and reorder your sales stages.</p>
+    <ul class="list-group mb-3">
+        {% for stage in stages %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ stage.name }}
+            <form action="{{ url_for('delete_stage', stage_id=stage.id) }}" method="post" onsubmit="return confirm('Are you sure? Deleting a stage cannot be undone.');">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    <form action="{{ url_for('settings') }}" method="post" class="d-flex gap-2">
+        <input type="text" name="stage_name" class="form-control" placeholder="New stage name" required>
+        <button type="submit" class="btn btn-success">Add Stage</button>
+    </form>
+</div>
+{% endblock %}

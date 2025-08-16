@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Edit Organization{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Edit {{ org.name }}</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="name">Organization Name</label>
+            <input type="text" name="name" id="name" value="{{ org.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input type="text" name="country" id="country" value="{{ org.country }}">
+        </div>
+        <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" name="category" id="category" value="{{ org.category }}">
+        </div>
+         <div class="form-group">
+            <label for="client_tier">Client Tier</label>
+            <select name="client_tier" id="client_tier">
+                <option value="Standard" {% if org.client_tier == 'Standard' %}selected{% endif %}>Standard</option>
+                <option value="Premium" {% if org.client_tier == 'Premium' %}selected{% endif %}>Premium</option>
+                <option value="Strategic Partner" {% if org.client_tier == 'Strategic Partner' %}selected{% endif %}>Strategic Partner</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="interests">Interests</label>
+            <input type="text" name="interests" id="interests" value="{{ org.interests }}">
+        </div>
+        <div class="form-group">
+            <label for="strategic_notes">Strategic Notes</label>
+            <textarea name="strategic_notes" id="strategic_notes" rows="5">{{ org.strategic_notes }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

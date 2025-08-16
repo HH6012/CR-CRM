@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Reporting & Analytics{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Reporting & Analytics</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-center mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Win Rate (All Time)</h5>
+                <p class="card-text fs-2 fw-bold">{{ "%.1f"|format(win_rate) }}%</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Avg. Sales Cycle</h5>
+                <p class="card-text fs-2 fw-bold">{{ "%.0f"|format(avg_cycle_length) }} Days</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Deals Won This Year</h5>
+                <p class="card-text fs-2 fw-bold">{{ deals_won_this_year }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

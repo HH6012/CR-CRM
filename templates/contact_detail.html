@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ contact.name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="h2">{{ contact.name }}</h1>
+        <p class="text-muted">{{ contact.title }} at <a href="{{ url_for('org_detail', org_id=contact.organization.id) }}">{{ contact.organization.name }}</a></p>
+    </div>
+    <a href="{{ url_for('edit_contact', contact_id=contact.id) }}" class="btn btn-secondary">Edit Contact</a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Activity Timeline</h5>
+            </div>
+            <div class="card-body">
+                {% for item in timeline_items %}
+                    <div class="mb-3 border-bottom pb-2">
+                        <p class="fw-bold mb-1">
+                            {{ item.type }}: 
+                            {% if item.type == 'Task' %}{{ item.item.title }}{% else %}{{ item.item.interaction_type }}{% endif %}
+                            <span class="float-end text-muted small">{{ item.date.strftime('%d %b %Y') }}</span>
+                        </p>
+                        {% if item.type == 'Interaction' %}
+                            <p class="ms-3 fst-italic">"{{ item.item.notes }}"</p>
+                        {% else %}
+                             <p class="ms-3">Status: <span class="badge {% if item.item.status == 'Pending' %}bg-warning{% else %}bg-success{% endif %}">{{ item.item.status }}</span></p>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>No activity has been logged for this contact yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-header"><h5 class="mb-0">Associated Deals</h5></div>
+            <ul class="list-group list-group-flush">
+                {% for deal in contact.deals %}
+                <li class="list-group-item"><a href="{{ url_for('deal_detail', deal_id=deal.id) }}">{{ deal.name }}</a></li>
+                {% else %}
+                <li class="list-group-item">No associated deals.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-header"><h5 class="mb-0">Log Activity</h5></div>
+            <div class="card-body">
+                <a href="{{ url_for('compose_email', contact_id=contact.id) }}" class="btn btn-success w-100 mb-2">Compose AI Email</a>
+                <a href="{{ url_for('add_interaction', contact_id=contact.id) }}" class="btn btn-primary w-100 mb-2">Log Interaction</a>
+                <a href="{{ url_for('add_task', contact_id=contact.id) }}" class="btn btn-outline-primary w-100">Create Task</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

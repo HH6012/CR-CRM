@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Deal: {{ deal.name }}{% endblock %}
+{% block content %}
+<style>
+    .page-header { display: flex; justify-content: space-between; align-items: center; }
+    .deal-kpis { display: flex; gap: 2rem; margin-bottom: 2rem; }
+</style>
+
+<div class="page-header">
+    <h1>{{ deal.name }}</h1>
+    <a href="{{ url_for('edit_deal', deal_id=deal.id) }}" class="button btn-secondary">Edit Deal</a>
+</div>
+<p>
+    <strong>Organization:</strong> <a href="{{ url_for('org_detail', org_id=deal.organization.id) }}">{{ deal.organization.name }}</a><br>
+    <strong>Closing Date:</strong> {{ deal.closing_date.strftime('%d %B %Y') }}
+</p>
+
+<div class="card">
+    <div class="deal-kpis">
+        <div class="kpi-card">
+            <div class="kpi-value">€{{ "{:,.0f}".format(deal.value) }}</div>
+            <div class="kpi-label">Value</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-value" style="color: #28a745;">{{ deal.stage }}</div>
+            <div class="kpi-label">Current Stage</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

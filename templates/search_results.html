@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Search Results for "{{ query }}"{% endblock %}
+
+{% block content %}
+<h1>Search Results for "{{ query }}"</h1>
+
+<div class="card">
+    <h2>Organizations</h2>
+    <ul>
+    {% for org in organizations %}
+        <li><a href="{{ url_for('org_detail', org_id=org.id) }}">{{ org.name }}</a> ({{ org.country }})</li>
+    {% else %}
+        <li>No organizations found.</li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div class="card">
+    <h2>Contacts</h2>
+    <ul>
+    {% for contact in contacts %}
+        <li><a href="{{ url_for('contact_detail', contact_id=contact.id) }}">{{ contact.name }}</a> at {{ contact.organization.name }}</li>
+    {% else %}
+        <li>No contacts found.</li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div class="card">
+    <h2>Deals</h2>
+    <ul>
+    {% for deal in deals %}
+        <li><a href="{{ url_for('deal_detail', deal_id=deal.id) }}">{{ deal.name }}</a> - €{{ "{:,.0f}".format(deal.value) }} ({{ deal.stage }})</li>
+    {% else %}
+        <li>No deals found.</li>
+    _   {% endfor %}
+    </ul>
+</div>
+{% endblock %}

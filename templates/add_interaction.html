@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Log Interaction{% endblock %}
+{% block content %}
+<div class="form-container">
+    <h1>Log Interaction with {{ contact.name }}</h1>
+    <form method="post">
+        <div class="form-group mb-3">
+            <label for="interaction_type" class="form-label">Interaction Type</label>
+            <select name="interaction_type" id="interaction_type" class="form-select">
+                <option value="Email">Email</option>
+                <option value="Call">Call</option>
+                <option value="Meeting">Meeting</option>
+                <option value="LinkedIn">LinkedIn</option>
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <label for="notes" class="form-label">Notes</label>
+            <textarea name="notes" id="notes" class="form-control" rows="8" placeholder="Summarize key points, outcomes, and next steps..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Save Interaction</button>
+    </form>
+</div>
+{% endblock %}

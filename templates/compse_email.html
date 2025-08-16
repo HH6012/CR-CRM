@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Compose Email{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="h4">AI Email Composer</h1>
+                <p>Generate a draft for <strong>{{ contact.name }}</strong> ({{ contact.email }})</p>
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="purpose" class="form-label">Purpose / Subject Line</label>
+                        <input type="text" name="purpose" id="purpose" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="key_points" class="form-label">Key Talking Points (one per line)</label>
+                        <textarea name="key_points" id="key_points" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Generate Draft</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h4">Final Email</h2>
+                {% if draft %}
+                <form action="{{ url_for('send_email', contact_id=contact.id) }}" method="post">
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" name="subject" class="form-control" value="{{ draft.split('Subject: ')[1].split('\n')[0] }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="body" class="form-label">Body</label>
+                        <textarea name="body" class="form-control" rows="15">{{ draft.split('\n\n', 1)[1] }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Send Email & Log Interaction</button>
+                </form>
+                {% else %}
+                <p class="text-muted">Your AI-generated draft will appear here.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

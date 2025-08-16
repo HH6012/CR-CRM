@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Organizations{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Organizations</h1>
+    <a href="{{ url_for('add_organization') }}" class="btn btn-sm btn-outline-success">Add Organization</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Organization Name</th>
+                    <th>Country</th>
+                    <th>Sponsorship Potential</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for org in organizations %}
+                <tr>
+                    <td><a href="{{ url_for('org_detail', org_id=org.id) }}">{{ org.name }}</a></td>
+                    <td>{{ org.country }}</td>
+                    <td><span class="badge {% if org.sponsorship_potential == 'High (Sponsor Target)' %}bg-primary{% else %}bg-secondary{% endif %}">{{ org.sponsorship_potential }}</span></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">No organizations found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

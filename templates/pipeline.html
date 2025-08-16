@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Sales Pipeline{% endblock %}
+
+{% block content %}
+<style>
+    .pipeline-container {
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        padding-bottom: 1rem;
+        min-height: 70vh;
+    }
+    .pipeline-stage {
+        flex: 0 0 300px;
+        background-color: #eef1f4;
+        border-radius: 8px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+    .stage-header {
+        padding-bottom: 0.5rem;
+        border-bottom: 3px solid #d0d9e2;
+        margin-bottom: 1rem;
+    }
+    .stage-title {
+        font-weight: bold;
+        color: #002346;
+        font-size: 1.1em;
+    }
+    .deals-list {
+        flex-grow: 1;
+        overflow-y: auto;
+        min-height: 100px; /* Ensures drop target is always available */
+    }
+    .deal-card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+    .deal-card {
+        background-color: white;
+        border-radius: 4px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        cursor: grab;
+        transition: box-shadow 0.2s ease-in-out;
+        border-left: 5px solid transparent;
+    }
+    .deal-card:active {
+        cursor: grabbing;
+    }
+    .deal-card:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    .deal-card h4 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1em;
+    }
+    .deal-card p {
+        font-size: 0.9em;
+        margin: 0;
+        color: #555;
+    }
+    .ghost {
+        opacity: 0.4;
+        background: #c8ebfb;
+    }
+    .stale-deal {
+        border-left-color: #ffc107; /* Yellow warning for stale deals */
+    }
+    .sponsor-target {
+        border-left-color: #0056b3; /* Blue for sponsor targets */
+    }
+    .stale-deal.sponsor-target {
+        border-left-color: #E67E22; /* Orange if both stale and sponsor */
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Sales Pipeline</h1>
+    <a href="{{ url_for('settings') }}" class="btn btn-secondary">Customize Stages</a>
+</div>
+
+<div class="pipeline-container mt-3">
+    {% for stage in stages %}
+    <div class="pipeline-stage">
+        <div class="stage-header">
+            <span class="stage-title">{{ stage.name }}</span>
+        </div>
+        <div class="deals-list" data-stage-id="{{ stage.id }}">
+            {% for deal in deals_by_stage[stage.id] %}
+            <div class="deal-card {% if (now - deal.updated_at).days > 14 %}stale-deal{% endif %} {% if deal.organization.sponsorship_potential == 'High (Sponsor Target)' %}sponsor-target{% endif %}" data-id="{{ deal.id }}">
+                <a href="{{ url_for('deal_detail', deal_id=deal.id) }}" class="deal-card-link">
+                    <h4>{{ deal.name }}</h4>
+                    <p><strong>Org:</strong> {{ deal.organization.name }}</p>
+                    <p><strong>Value:</strong> €{{ "{:,.0f}".format(deal.value) }}</p>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dealLists = document.querySelectorAll('.deals-list');
+    dealLists.forEach(list => {
+        new Sortable(list, {
+            group: 'deals',
+            animation: 150,
+            ghostClass: 'ghost',
+            onEnd: function (evt) {
+                const dealId = evt.item.dataset.id;
+                const newStageId = evt.to.dataset.stageId; // Use stageId now
+                
+                fetch(`/api/deal/${dealId}/update_stage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ new_stage_id: newStageId }) // Send the ID
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        alert('Could not update stage!');
+                    }
+                });
+            },
+        });
+    });
+});
+</script>
+{% endblock %}
